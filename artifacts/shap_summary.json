@@ -1,0 +1,546 @@
+{
+  "pd": {
+    "model": "logistic_regression",
+    "selected_for_el": true,
+    "units": "log-odds (raw margin, before isotonic calibration)",
+    "rows_explained": 5000,
+    "rows": "random OOT sample",
+    "features": [
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.44121,
+        "share": 0.1806,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.30618,
+        "share": 0.1254,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.26366,
+        "share": 0.1079,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.22331,
+        "share": 0.0914,
+        "mean_shap_by_value": {
+          "Business": -0.01041,
+          "Gig/Contract": 0.39748,
+          "Salaried": -0.19643,
+          "Self-employed": 0.27746
+        }
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.18048,
+        "share": 0.0739,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "months_on_book",
+        "mean_abs_shap": 0.15238,
+        "share": 0.0624,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "months_since_last_missed",
+        "mean_abs_shap": 0.14647,
+        "share": 0.06,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "ltv_at_origination",
+        "mean_abs_shap": 0.14174,
+        "share": 0.058,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "monthly_income",
+        "mean_abs_shap": 0.12547,
+        "share": 0.0514,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.1087,
+        "share": 0.0445,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.10354,
+        "share": 0.0424,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "num_dependents",
+        "mean_abs_shap": 0.0617,
+        "share": 0.0253,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "missed_payments_12m",
+        "mean_abs_shap": 0.05913,
+        "share": 0.0242,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "credit_limit",
+        "mean_abs_shap": 0.04905,
+        "share": 0.0201,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "product",
+        "mean_abs_shap": 0.04369,
+        "share": 0.0179,
+        "mean_shap_by_value": {
+          "auto": 0.03339,
+          "credit_line": -0.03435,
+          "home_equity": 0.42139,
+          "personal": -0.02761
+        }
+      },
+      {
+        "feature": "age",
+        "mean_abs_shap": 0.02969,
+        "share": 0.0122,
+        "spearman_value_vs_shap": -1.0,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "max_dpd_bucket_12m",
+        "mean_abs_shap": 0.00604,
+        "share": 0.0025,
+        "spearman_value_vs_shap": 1.0,
+        "direction": "higher value -> higher prediction"
+      }
+    ]
+  },
+  "pd_tree_reference": {
+    "model": "xgboost",
+    "selected_for_el": false,
+    "units": "log-odds (raw margin, before isotonic calibration)",
+    "rows_explained": 5000,
+    "rows": "random OOT sample",
+    "features": [
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.37284,
+        "share": 0.1659,
+        "spearman_value_vs_shap": -0.9838,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.31075,
+        "share": 0.1383,
+        "spearman_value_vs_shap": 0.8572,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.3048,
+        "share": 0.1356,
+        "spearman_value_vs_shap": 0.9288,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_on_book",
+        "mean_abs_shap": 0.21121,
+        "share": 0.094,
+        "spearman_value_vs_shap": -0.8373,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.1839,
+        "share": 0.0818,
+        "spearman_value_vs_shap": 0.22,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_since_last_missed",
+        "mean_abs_shap": 0.16167,
+        "share": 0.0719,
+        "spearman_value_vs_shap": -0.0655,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.13513,
+        "share": 0.0601,
+        "mean_shap_by_value": {
+          "Business": 0.00649,
+          "Gig/Contract": 0.18004,
+          "Salaried": -0.13242,
+          "Self-employed": 0.15017
+        }
+      },
+      {
+        "feature": "monthly_income",
+        "mean_abs_shap": 0.12469,
+        "share": 0.0555,
+        "spearman_value_vs_shap": -0.8203,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.10296,
+        "share": 0.0458,
+        "spearman_value_vs_shap": 0.8809,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "ltv_at_origination",
+        "mean_abs_shap": 0.09359,
+        "share": 0.0416,
+        "spearman_value_vs_shap": 0.8586,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "credit_limit",
+        "mean_abs_shap": 0.06812,
+        "share": 0.0303,
+        "spearman_value_vs_shap": -0.4109,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "age",
+        "mean_abs_shap": 0.06077,
+        "share": 0.027,
+        "spearman_value_vs_shap": -0.2032,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "num_dependents",
+        "mean_abs_shap": 0.05367,
+        "share": 0.0239,
+        "spearman_value_vs_shap": 0.7717,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.03281,
+        "share": 0.0146,
+        "spearman_value_vs_shap": -0.3281,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "missed_payments_12m",
+        "mean_abs_shap": 0.02318,
+        "share": 0.0103,
+        "spearman_value_vs_shap": 0.4157,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "product",
+        "mean_abs_shap": 0.00433,
+        "share": 0.0019,
+        "mean_shap_by_value": {
+          "auto": -0.00199,
+          "credit_line": -0.00141,
+          "home_equity": 0.0066,
+          "personal": 0.00435
+        }
+      },
+      {
+        "feature": "max_dpd_bucket_12m",
+        "mean_abs_shap": 0.0032,
+        "share": 0.0014,
+        "spearman_value_vs_shap": 0.2062,
+        "direction": "higher value -> higher prediction"
+      }
+    ]
+  },
+  "lgd": {
+    "model": "lightgbm",
+    "selected_for_el": true,
+    "units": "log-odds of LGD (cross-entropy objective)",
+    "rows_explained": 1086,
+    "rows": "all OOT defaults",
+    "features": [
+      {
+        "feature": "ltv_at_origination",
+        "mean_abs_shap": 0.72311,
+        "share": 0.3986,
+        "spearman_value_vs_shap": 0.8297,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.35402,
+        "share": 0.1951,
+        "spearman_value_vs_shap": 0.7197,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "monthly_income",
+        "mean_abs_shap": 0.20983,
+        "share": 0.1157,
+        "spearman_value_vs_shap": -0.9567,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.10237,
+        "share": 0.0564,
+        "mean_shap_by_value": {
+          "Business": 0.02631,
+          "Gig/Contract": 0.16722,
+          "Salaried": -0.11246,
+          "Self-employed": 0.0449
+        }
+      },
+      {
+        "feature": "credit_limit",
+        "mean_abs_shap": 0.09777,
+        "share": 0.0539,
+        "spearman_value_vs_shap": -0.7234,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.05303,
+        "share": 0.0292,
+        "spearman_value_vs_shap": 0.2889,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.04932,
+        "share": 0.0272,
+        "spearman_value_vs_shap": 0.3343,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_since_last_missed",
+        "mean_abs_shap": 0.04323,
+        "share": 0.0238,
+        "spearman_value_vs_shap": -0.4475,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "age",
+        "mean_abs_shap": 0.03521,
+        "share": 0.0194,
+        "spearman_value_vs_shap": 0.2073,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_on_book",
+        "mean_abs_shap": 0.03357,
+        "share": 0.0185,
+        "spearman_value_vs_shap": -0.231,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.02994,
+        "share": 0.0165,
+        "spearman_value_vs_shap": -0.1706,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.02262,
+        "share": 0.0125,
+        "spearman_value_vs_shap": 0.3898,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "num_dependents",
+        "mean_abs_shap": 0.01749,
+        "share": 0.0096,
+        "spearman_value_vs_shap": -0.5341,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "product",
+        "mean_abs_shap": 0.01665,
+        "share": 0.0092,
+        "mean_shap_by_value": {
+          "auto": -0.03151,
+          "credit_line": 0.00012,
+          "home_equity": 0.02107,
+          "personal": 0.0193
+        }
+      },
+      {
+        "feature": "missed_payments_12m",
+        "mean_abs_shap": 0.01054,
+        "share": 0.0058,
+        "spearman_value_vs_shap": 0.7699,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.00867,
+        "share": 0.0048,
+        "spearman_value_vs_shap": 0.6852,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "max_dpd_bucket_12m",
+        "mean_abs_shap": 0.00694,
+        "share": 0.0038,
+        "spearman_value_vs_shap": 0.5904,
+        "direction": "higher value -> higher prediction"
+      }
+    ]
+  },
+  "ead_factor": {
+    "model": "lightgbm",
+    "selected_for_el": true,
+    "units": "EAD / exposure_base",
+    "rows_explained": 1086,
+    "rows": "all OOT defaults",
+    "features": [
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.08564,
+        "share": 0.3258,
+        "spearman_value_vs_shap": 0.9463,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.05853,
+        "share": 0.2227,
+        "spearman_value_vs_shap": -0.8413,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.05421,
+        "share": 0.2062,
+        "spearman_value_vs_shap": 0.6576,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_since_last_missed",
+        "mean_abs_shap": 0.01143,
+        "share": 0.0435,
+        "spearman_value_vs_shap": -0.4183,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.01112,
+        "share": 0.0423,
+        "spearman_value_vs_shap": 0.7041,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "age",
+        "mean_abs_shap": 0.00774,
+        "share": 0.0294,
+        "spearman_value_vs_shap": 0.1898,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.00664,
+        "share": 0.0253,
+        "spearman_value_vs_shap": -0.6397,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.00506,
+        "share": 0.0193,
+        "spearman_value_vs_shap": -0.0081,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "credit_limit",
+        "mean_abs_shap": 0.00492,
+        "share": 0.0187,
+        "spearman_value_vs_shap": 0.1533,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "monthly_income",
+        "mean_abs_shap": 0.00401,
+        "share": 0.0153,
+        "spearman_value_vs_shap": -0.4308,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "num_dependents",
+        "mean_abs_shap": 0.00358,
+        "share": 0.0136,
+        "spearman_value_vs_shap": 0.8932,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "months_on_book",
+        "mean_abs_shap": 0.00344,
+        "share": 0.0131,
+        "spearman_value_vs_shap": 0.4232,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.0023,
+        "share": 0.0087,
+        "mean_shap_by_value": {
+          "Business": 0.001,
+          "Gig/Contract": -0.00016,
+          "Salaried": -0.0024,
+          "Self-employed": 0.00384
+        }
+      },
+      {
+        "feature": "product",
+        "mean_abs_shap": 0.00179,
+        "share": 0.0068,
+        "mean_shap_by_value": {
+          "auto": -0.00092,
+          "credit_line": -0.00175,
+          "home_equity": -0.00057,
+          "personal": 0.00276
+        }
+      },
+      {
+        "feature": "ltv_at_origination",
+        "mean_abs_shap": 0.00172,
+        "share": 0.0065,
+        "spearman_value_vs_shap": -0.1915,
+        "direction": "higher value -> lower prediction"
+      },
+      {
+        "feature": "missed_payments_12m",
+        "mean_abs_shap": 0.00043,
+        "share": 0.0016,
+        "spearman_value_vs_shap": 0.3214,
+        "direction": "higher value -> higher prediction"
+      },
+      {
+        "feature": "max_dpd_bucket_12m",
+        "mean_abs_shap": 0.0003,
+        "share": 0.0011,
+        "spearman_value_vs_shap": -0.7543,
+        "direction": "higher value -> lower prediction"
+      }
+    ]
+  }
+}
