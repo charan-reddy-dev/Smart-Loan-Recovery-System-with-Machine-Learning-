@@ -1,0 +1,741 @@
+{
+  "benchmark": "leak-free-credit-risk",
+  "version": 1,
+  "started_at_utc": "2026-11-18T14:33:38+00:00",
+  "git_commit": "2e52518",
+  "command": "python src/train_evaluate.py ",
+  "environment": {
+    "python": "3.14.7",
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "packages": {
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "scikit-learn": "1.9.1",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "shap": "0.54.1"
+    }
+  },
+  "seed": 42,
+  "data": {
+    "source": "synthetic loan book simulated month by month by src/data_pipeline.py",
+    "generator": {
+      "n_applicants": 52000,
+      "seed": 2027,
+      "last_origination": 50,
+      "min_bureau_score": 640,
+      "max_dti": 0.6,
+      "miss_intercept": -5.6,
+      "seasoning_bump": 0.3,
+      "shock_hazard": 0.003,
+      "shock_mean_months": 6.0,
+      "shock_effect": 1.6,
+      "cure_intercept": 0.4,
+      "prepay_rate": 0.006,
+      "line_close_rate": 0.004,
+      "late_fee_rate": 0.02,
+      "macro_ar": 0.85,
+      "macro_vol": 0.08,
+      "oracle_paths": 200,
+      "dev_snapshot": "2022-06",
+      "oot_snapshot": "2023-06",
+      "window_months": 12,
+      "default_definition": "90+ days past due (3 missed instalments)"
+    },
+    "dataset_sha256": "35f411781df0941436b957a01a933bd76dfdb4a986a2e126df4663c005935ec1",
+    "dev": {
+      "snapshot": "2022-06",
+      "loans": 18163,
+      "defaults": 1187,
+      "default_rate": 0.0654
+    },
+    "oot": {
+      "snapshot": "2023-06",
+      "loans": 21477,
+      "defaults": 1086,
+      "default_rate": 0.0506
+    },
+    "features": {
+      "origination": [
+        "product",
+        "employment_type",
+        "age",
+        "monthly_income",
+        "num_dependents",
+        "bureau_score",
+        "credit_limit",
+        "term_months",
+        "interest_rate",
+        "dti_at_origination",
+        "ltv_at_origination"
+      ],
+      "snapshot": [
+        "months_on_book",
+        "current_dpd_bucket",
+        "missed_payments_12m",
+        "max_dpd_bucket_12m",
+        "months_since_last_missed",
+        "balance_to_limit"
+      ]
+    }
+  },
+  "leakage_controls": {
+    "feature_timing_check": "passed: every feature is an origination or snapshot column (assert_no_leakage)",
+    "out_of_time_split": "development window ends at the OOT snapshot (2023-06)",
+    "label_shuffle_control_oot_roc_auc": {
+      "draws": [
+        0.5561,
+        0.5702,
+        0.4549,
+        0.4914,
+        0.4548
+      ],
+      "mean": 0.5055
+    },
+    "dev_oot_loan_overlap": "a loan performing at both snapshots appears in both samples (standard multi-snapshot design); its development label is necessarily 0 and its OOT features only use history up to 2023-06",
+    "future_resampling_test": "tests/test_data_pipeline.py: re-drawing months after the snapshot leaves every feature identical and changes labels"
+  },
+  "pd": {
+    "candidates": [
+      "logistic_regression",
+      "lightgbm",
+      "xgboost"
+    ],
+    "hyperparameters": "fixed in code, not tuned",
+    "calibration": "isotonic; inner stratified 3-fold CV during model selection, 5-fold for the final model",
+    "selection_rule": "lowest mean 5-fold CV Brier score of the calibrated model (development sample only)",
+    "cv_development": {
+      "logistic_regression": {
+        "raw": {
+          "roc_auc": {
+            "mean": 0.77854,
+            "std": 0.02734
+          },
+          "pr_auc": {
+            "mean": 0.3595,
+            "std": 0.03642
+          },
+          "brier": {
+            "mean": 0.05005,
+            "std": 0.00157
+          },
+          "log_loss": {
+            "mean": 0.1956,
+            "std": 0.00719
+          },
+          "ece_10_bins": {
+            "mean": 0.01014,
+            "std": 0.0035
+          }
+        },
+        "calibrated": {
+          "roc_auc": {
+            "mean": 0.77712,
+            "std": 0.0278
+          },
+          "pr_auc": {
+            "mean": 0.35362,
+            "std": 0.03406
+          },
+          "brier": {
+            "mean": 0.05003,
+            "std": 0.00176
+          },
+          "log_loss": {
+            "mean": 0.19578,
+            "std": 0.00764
+          },
+          "ece_10_bins": {
+            "mean": 0.00973,
+            "std": 0.00365
+          }
+        }
+      },
+      "lightgbm": {
+        "raw": {
+          "roc_auc": {
+            "mean": 0.76746,
+            "std": 0.02331
+          },
+          "pr_auc": {
+            "mean": 0.35314,
+            "std": 0.0301
+          },
+          "brier": {
+            "mean": 0.05048,
+            "std": 0.00151
+          },
+          "log_loss": {
+            "mean": 0.19844,
+            "std": 0.00707
+          },
+          "ece_10_bins": {
+            "mean": 0.01192,
+            "std": 0.00427
+          }
+        },
+        "calibrated": {
+          "roc_auc": {
+            "mean": 0.76894,
+            "std": 0.02286
+          },
+          "pr_auc": {
+            "mean": 0.35042,
+            "std": 0.03202
+          },
+          "brier": {
+            "mean": 0.05034,
+            "std": 0.00145
+          },
+          "log_loss": {
+            "mean": 0.19842,
+            "std": 0.00566
+          },
+          "ece_10_bins": {
+            "mean": 0.00998,
+            "std": 0.0016
+          }
+        }
+      },
+      "xgboost": {
+        "raw": {
+          "roc_auc": {
+            "mean": 0.77188,
+            "std": 0.0236
+          },
+          "pr_auc": {
+            "mean": 0.35608,
+            "std": 0.03503
+          },
+          "brier": {
+            "mean": 0.05024,
+            "std": 0.00151
+          },
+          "log_loss": {
+            "mean": 0.19698,
+            "std": 0.00709
+          },
+          "ece_10_bins": {
+            "mean": 0.01024,
+            "std": 0.00478
+          }
+        },
+        "calibrated": {
+          "roc_auc": {
+            "mean": 0.77122,
+            "std": 0.02363
+          },
+          "pr_auc": {
+            "mean": 0.35308,
+            "std": 0.03345
+          },
+          "brier": {
+            "mean": 0.05021,
+            "std": 0.00149
+          },
+          "log_loss": {
+            "mean": 0.19846,
+            "std": 0.00709
+          },
+          "ece_10_bins": {
+            "mean": 0.0107,
+            "std": 0.0029
+          }
+        }
+      }
+    },
+    "selected": "logistic_regression",
+    "oot": {
+      "logistic_regression": {
+        "roc_auc": 0.7645,
+        "gini": 0.529,
+        "pr_auc": 0.3015,
+        "brier": 0.04106,
+        "brier_skill_vs_base_rate": 0.1447,
+        "log_loss": 0.1678,
+        "ks": 0.3827,
+        "ece_10_bins": 0.0101,
+        "mean_pd": 0.059,
+        "observed_default_rate": 0.0506,
+        "n": 21477,
+        "defaults": 1086
+      },
+      "lightgbm": {
+        "roc_auc": 0.7717,
+        "gini": 0.5434,
+        "pr_auc": 0.3073,
+        "brier": 0.04072,
+        "brier_skill_vs_base_rate": 0.1518,
+        "log_loss": 0.1657,
+        "ks": 0.3917,
+        "ece_10_bins": 0.00882,
+        "mean_pd": 0.0594,
+        "observed_default_rate": 0.0506,
+        "n": 21477,
+        "defaults": 1086
+      },
+      "xgboost": {
+        "roc_auc": 0.7749,
+        "gini": 0.5499,
+        "pr_auc": 0.3062,
+        "brier": 0.0407,
+        "brier_skill_vs_base_rate": 0.1522,
+        "log_loss": 0.1652,
+        "ks": 0.3937,
+        "ece_10_bins": 0.00892,
+        "mean_pd": 0.0595,
+        "observed_default_rate": 0.0506,
+        "n": 21477,
+        "defaults": 1086
+      }
+    },
+    "oot_selected_bootstrap_95ci": {
+      "roc_auc": [
+        0.74892,
+        0.78029
+      ],
+      "pr_auc": [
+        0.27388,
+        0.33161
+      ],
+      "brier": [
+        0.03878,
+        0.04338
+      ],
+      "resamples": 500
+    },
+    "oracle_oot": {
+      "roc_auc": 0.8343,
+      "gini": 0.6686,
+      "pr_auc": 0.3691,
+      "brier": 0.03866,
+      "brier_skill_vs_base_rate": 0.1946,
+      "log_loss": 0.155,
+      "ks": 0.5053,
+      "ece_10_bins": 0.0044,
+      "mean_pd": 0.0512,
+      "observed_default_rate": 0.0506,
+      "n": 21477,
+      "defaults": 1086
+    },
+    "oracle_note": "generator's own default probability from hidden state; the ceiling for any model on this data",
+    "calibration_table_oot": [
+      {
+        "decile": 1,
+        "n": 2148,
+        "mean_pd": 0.0034,
+        "observed_default_rate": 0.0084,
+        "defaults": 18
+      },
+      {
+        "decile": 2,
+        "n": 2148,
+        "mean_pd": 0.0135,
+        "observed_default_rate": 0.0149,
+        "defaults": 32
+      },
+      {
+        "decile": 3,
+        "n": 2148,
+        "mean_pd": 0.0191,
+        "observed_default_rate": 0.0144,
+        "defaults": 31
+      },
+      {
+        "decile": 4,
+        "n": 2148,
+        "mean_pd": 0.0246,
+        "observed_default_rate": 0.0265,
+        "defaults": 57
+      },
+      {
+        "decile": 5,
+        "n": 2148,
+        "mean_pd": 0.035,
+        "observed_default_rate": 0.0284,
+        "defaults": 61
+      },
+      {
+        "decile": 6,
+        "n": 2148,
+        "mean_pd": 0.0431,
+        "observed_default_rate": 0.0405,
+        "defaults": 87
+      },
+      {
+        "decile": 7,
+        "n": 2148,
+        "mean_pd": 0.0462,
+        "observed_default_rate": 0.0405,
+        "defaults": 87
+      },
+      {
+        "decile": 8,
+        "n": 2147,
+        "mean_pd": 0.0624,
+        "observed_default_rate": 0.0545,
+        "defaults": 117
+      },
+      {
+        "decile": 9,
+        "n": 2147,
+        "mean_pd": 0.0888,
+        "observed_default_rate": 0.0703,
+        "defaults": 151
+      },
+      {
+        "decile": 10,
+        "n": 2147,
+        "mean_pd": 0.2541,
+        "observed_default_rate": 0.2073,
+        "defaults": 445
+      }
+    ],
+    "label_shuffle_control_oot_roc_auc": {
+      "draws": [
+        0.5561,
+        0.5702,
+        0.4549,
+        0.4914,
+        0.4548
+      ],
+      "mean": 0.5055
+    }
+  },
+  "lgd": {
+    "trained_on": "1187 development-sample defaults",
+    "cv_development": {
+      "segment_mean": {
+        "mae": {
+          "mean": 0.1138,
+          "std": 0.0025
+        },
+        "rmse": {
+          "mean": 0.1411,
+          "std": 0.0037
+        },
+        "r2": {
+          "mean": 0.7632,
+          "std": 0.0287
+        }
+      },
+      "lightgbm": {
+        "mae": {
+          "mean": 0.1045,
+          "std": 0.0022
+        },
+        "rmse": {
+          "mean": 0.1322,
+          "std": 0.0031
+        },
+        "r2": {
+          "mean": 0.7925,
+          "std": 0.021
+        }
+      }
+    },
+    "selection_rule": "lowest mean 5-fold CV RMSE",
+    "selected": "lightgbm",
+    "oot_defaults": {
+      "segment_mean": {
+        "mae": 0.1057,
+        "rmse": 0.1325,
+        "r2": 0.8073,
+        "mean_actual": 0.6211,
+        "mean_predicted": 0.6237,
+        "n": 1086
+      },
+      "lightgbm": {
+        "mae": 0.0948,
+        "rmse": 0.1225,
+        "r2": 0.8354,
+        "mean_actual": 0.6211,
+        "mean_predicted": 0.6235,
+        "n": 1086
+      }
+    }
+  },
+  "ead": {
+    "trained_on": "1187 development-sample defaults",
+    "cv_development": {
+      "segment_mean": {
+        "mae": {
+          "mean": 0.1054,
+          "std": 0.0066
+        },
+        "rmse": {
+          "mean": 0.1476,
+          "std": 0.012
+        },
+        "r2": {
+          "mean": 0.4783,
+          "std": 0.0642
+        }
+      },
+      "lightgbm": {
+        "mae": {
+          "mean": 0.0737,
+          "std": 0.0013
+        },
+        "rmse": {
+          "mean": 0.1111,
+          "std": 0.0051
+        },
+        "r2": {
+          "mean": 0.7043,
+          "std": 0.0272
+        }
+      }
+    },
+    "selection_rule": "lowest mean 5-fold CV RMSE",
+    "selected": "lightgbm",
+    "oot_defaults": {
+      "segment_mean": {
+        "mae": 0.1215,
+        "rmse": 0.1712,
+        "r2": 0.3099,
+        "mean_actual": 0.7989,
+        "mean_predicted": 0.8089,
+        "n": 1086
+      },
+      "lightgbm": {
+        "mae": 0.0798,
+        "rmse": 0.1234,
+        "r2": 0.6415,
+        "mean_actual": 0.7989,
+        "mean_predicted": 0.8027,
+        "n": 1086
+      }
+    },
+    "oot_defaults_ead_inr": {
+      "mae": 24162.7648,
+      "rmse": 44330.7803,
+      "r2": 0.9929,
+      "mean_actual": 342046.4093,
+      "mean_predicted": 344418.7819,
+      "n": 1086
+    }
+  },
+  "expected_loss": {
+    "formula": "EL_i = PD_i x LGD_i x EAD_i (12-month horizon, INR)",
+    "oot_portfolio": {
+      "loans": 21477,
+      "exposure_base_inr": 8443606422.0,
+      "predicted_el_inr": 213504037.0,
+      "realized_loss_inr": 164067460.0,
+      "el_to_realized": 1.3013
+    },
+    "by_product": [
+      {
+        "product": "auto",
+        "predicted_el_inr": 43016661.0,
+        "realized_loss_inr": 32202779.0,
+        "el_to_realized": 1.3358
+      },
+      {
+        "product": "credit_line",
+        "predicted_el_inr": 34452457.0,
+        "realized_loss_inr": 31789515.0,
+        "el_to_realized": 1.0838
+      },
+      {
+        "product": "home_equity",
+        "predicted_el_inr": 14310799.0,
+        "realized_loss_inr": 10779232.0,
+        "el_to_realized": 1.3276
+      },
+      {
+        "product": "personal",
+        "predicted_el_inr": 121724121.0,
+        "realized_loss_inr": 89295934.0,
+        "el_to_realized": 1.3632
+      }
+    ],
+    "tiers": [
+      {
+        "tier": "Tier 1",
+        "share_of_loans": 0.05,
+        "action": "Dedicated collector now: restructuring or settlement offer, collateral review",
+        "loans": 1074,
+        "predicted_el_inr": 99046130.0,
+        "realized_loss_inr": 74407549.0,
+        "share_of_realized_loss": 0.4535,
+        "mean_pd": 0.2928,
+        "observed_default_rate": 0.2337
+      },
+      {
+        "tier": "Tier 2",
+        "share_of_loans": 0.1,
+        "action": "Proactive outreach before the next due date; payment-plan options",
+        "loans": 2148,
+        "predicted_el_inr": 49582905.0,
+        "realized_loss_inr": 32377436.0,
+        "share_of_realized_loss": 0.1973,
+        "mean_pd": 0.1064,
+        "observed_default_rate": 0.0782
+      },
+      {
+        "tier": "Tier 3",
+        "share_of_loans": 0.25,
+        "action": "Automated reminders plus agent follow-up on any missed instalment",
+        "loans": 5369,
+        "predicted_el_inr": 43969472.0,
+        "realized_loss_inr": 35799763.0,
+        "share_of_realized_loss": 0.2182,
+        "mean_pd": 0.0658,
+        "observed_default_rate": 0.0577
+      },
+      {
+        "tier": "Tier 4",
+        "share_of_loans": 0.6,
+        "action": "Standard servicing and monitoring",
+        "loans": 12886,
+        "predicted_el_inr": 20905530.0,
+        "realized_loss_inr": 21482712.0,
+        "share_of_realized_loss": 0.1309,
+        "mean_pd": 0.0288,
+        "observed_default_rate": 0.0277
+      }
+    ],
+    "loss_capture_top_share": {
+      "top_5pct": {
+        "by_expected_loss": 0.4535,
+        "by_pd_only": 0.363,
+        "by_exposure_only": 0.1628,
+        "random": 0.05
+      },
+      "top_10pct": {
+        "by_expected_loss": 0.5732,
+        "by_pd_only": 0.4711,
+        "by_exposure_only": 0.2927,
+        "random": 0.1
+      },
+      "top_20pct": {
+        "by_expected_loss": 0.7255,
+        "by_pd_only": 0.6278,
+        "by_exposure_only": 0.4715,
+        "random": 0.2
+      }
+    },
+    "diagnostics": {
+      "el_to_realized_with_oracle_pd": 1.0926,
+      "pd_mean_oot_vs_observed": [
+        0.059,
+        0.0506
+      ],
+      "development_default_rate": 0.0654
+    }
+  },
+  "top_shap_drivers": {
+    "pd": [
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.44121,
+        "share": 0.1806
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.30618,
+        "share": 0.1254
+      },
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.26366,
+        "share": 0.1079
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.22331,
+        "share": 0.0914
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.18048,
+        "share": 0.0739
+      }
+    ],
+    "pd_tree_reference": [
+      {
+        "feature": "bureau_score",
+        "mean_abs_shap": 0.37284,
+        "share": 0.1659
+      },
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.31075,
+        "share": 0.1383
+      },
+      {
+        "feature": "dti_at_origination",
+        "mean_abs_shap": 0.3048,
+        "share": 0.1356
+      },
+      {
+        "feature": "months_on_book",
+        "mean_abs_shap": 0.21121,
+        "share": 0.094
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.1839,
+        "share": 0.0818
+      }
+    ],
+    "lgd": [
+      {
+        "feature": "ltv_at_origination",
+        "mean_abs_shap": 0.72311,
+        "share": 0.3986
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.35402,
+        "share": 0.1951
+      },
+      {
+        "feature": "monthly_income",
+        "mean_abs_shap": 0.20983,
+        "share": 0.1157
+      },
+      {
+        "feature": "employment_type",
+        "mean_abs_shap": 0.10237,
+        "share": 0.0564
+      },
+      {
+        "feature": "credit_limit",
+        "mean_abs_shap": 0.09777,
+        "share": 0.0539
+      }
+    ],
+    "ead_factor": [
+      {
+        "feature": "balance_to_limit",
+        "mean_abs_shap": 0.08564,
+        "share": 0.3258
+      },
+      {
+        "feature": "interest_rate",
+        "mean_abs_shap": 0.05853,
+        "share": 0.2227
+      },
+      {
+        "feature": "term_months",
+        "mean_abs_shap": 0.05421,
+        "share": 0.2062
+      },
+      {
+        "feature": "months_since_last_missed",
+        "mean_abs_shap": 0.01143,
+        "share": 0.0435
+      },
+      {
+        "feature": "current_dpd_bucket",
+        "mean_abs_shap": 0.01112,
+        "share": 0.0423
+      }
+    ]
+  },
+  "runtime_seconds": 46.8
+}
